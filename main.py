@@ -8,15 +8,13 @@ import base64
 
 app = FastAPI()
 
+
 def fetch_google_sheet_data():
-    gc = gspread.service_account(filename="tlrkrghk-a82aabac4256.json")
-    
-    spreadsheet = gc.open_by_url("https://docs.google.com/spreadsheets/d/12aVmGJ7dgixKIZNPT-WhmTQzakf4ITuB/edit?usp=sharing")
-    
+    df = gspread.service_account(filename='/app/tlrkrghk-a82aabac4256.json')
+
+    spreadsheet = df.open_by_key('12aVmGJ7dgixKIZNPT-WhmTQzakf4ITuB')
     worksheet = spreadsheet.sheet1
-    
     data = worksheet.get_all_records()
-    df = pd.DataFrame(data)
     return df
 
 @app.get("/", response_class=HTMLResponse)
